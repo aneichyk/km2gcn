@@ -28,6 +28,9 @@ plotGOenrichment <- function(net.label,
   background = gene.names
   modules <- unique(net$moduleColors)
   module.colors = modules
+  organism = "hsapiens"
+  if (grepl("^ENSG", gene.names[1])) organism = "hsapiens"
+  if (grepl("^ENSM", gene.names[1])) organism = "mmusculus"
 
   enrichment <- matrix(nrow=length(partitions),ncol=length(modules))
   new.terms <- matrix(nrow=length(partitions),ncol=length(modules))
@@ -58,7 +61,8 @@ plotGOenrichment <- function(net.label,
 
       all.genes[[module]] = names(partition)[partition == which(module.colors == module)]
     }
-    go <- gprofiler(query=all.genes,correction_method=gprof.method,exclude_iea=exclude.iea,
+    go <- gprofiler(query=all.genes,organism = organism,
+                    correction_method=gprof.method,exclude_iea=exclude.iea,
                     custom_bg=background,src_filter=filter)
 
     goresults[[partition.index]] <- go
