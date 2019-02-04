@@ -46,9 +46,13 @@ genNetFromPartition <- function(expr.data.file,
   }
 
   #If there are some grey genes as NA, add them again
-  new.net$moduleColors[is.na(new.net$moduleColors)] = "grey"
+  if (is.numeric(new.net$moduleColors)) {
+    new.net$moduleColors[is.na(new.net$moduleColors)] = 0
+  }else {
+    new.net$moduleColors[is.na(new.net$moduleColors)] = "grey"
+  }
 
-  if(sum(new.net$moduleColors == "grey") >= mgg)
+  if(sum(new.net$moduleColors == "grey") >= mgg | sum(new.net$moduleColors == 0) >= mgg)
     new.net$MEs <- moduleEigengenes(expr.data,new.net$moduleColors,softPower=beta, excludeGrey=F)$eigengenes
   else
     new.net$MEs <- moduleEigengenes(expr.data,new.net$moduleColors,softPower=beta, excludeGrey=T)$eigengenes

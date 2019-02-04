@@ -58,8 +58,7 @@ plotGOenrichment <- function(net.label,
 
     all.genes <- NULL
     for(module in modules){
-
-      all.genes[[module]] = names(partition)[partition == which(module.colors == module)]
+      all.genes[[as.character(module)]] = names(partition)[partition == which(module.colors == module)]
     }
     go <- gprofiler(query=all.genes,organism = organism,
                     correction_method=gprof.method,exclude_iea=exclude.iea,

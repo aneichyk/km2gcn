@@ -114,10 +114,11 @@ applykM2WGCNA <- function(net.label,
   #print(head(partition.in.colors,5))
 
   print("Getting initial eigengenes")
-  if(sum(partition.in.colors == "grey") < min.genes.for.grey)
+  if(sum(partition.in.colors == "grey") < min.genes.for.grey | sum(partition.in.colors == 0) < min.genes.for.grey){
     eigengenes = moduleEigengenes(expr.data,partition.in.colors, excludeGrey=TRUE)
-  else
+  } else {
     eigengenes = moduleEigengenes(expr.data,partition.in.colors, excludeGrey=F)
+  }
 
   cat("We got",length(eigengenes$eigengenes)," eigengene vectors\n")
   print(head(eigengenes$eigengenes))
@@ -220,7 +221,7 @@ createCentroidMatrix <- function(eigengenes){
 
 
 getNewCentroids <- function(expr.data,partition.in.colors,centroid.labels,mgg){
-  if(sum(partition.in.colors == "grey") < mgg)
+  if(sum(partition.in.colors == "grey") < mgg | sum(partition.in.colors == 0) < mgg)
     eg.vectors = moduleEigengenes(expr.data,partition.in.colors, excludeGrey=TRUE)$eigengenes
   else
     eg.vectors = moduleEigengenes(expr.data,partition.in.colors, excludeGrey=F)$eigengenes
